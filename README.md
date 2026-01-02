@@ -48,6 +48,8 @@ optimus-robot/
 ​[ ] Fase 2 - Mensageria: Integração com Redis para eventos assíncronos.
 ​[ ] Fase 3 - QAOps: Implementação de testes de resiliência com Cypress.
 ​[ ] Fase 4 - Edge Integration: Conexão com módulos de visão computacional.
+
+
 ​📊 Diferencial de Engenharia
 ​Este projeto demonstra competências em:
 ​Arquitetura orientada a eventos.

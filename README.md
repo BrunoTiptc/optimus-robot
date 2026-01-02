@@ -55,25 +55,4 @@ optimus-robot/
 ​Arquitetura orientada a eventos.
 ​Containerização de microserviços.
 ​Garantia de qualidade profissional aplicada a sistemas complexos.
-​<!-- end list -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+​

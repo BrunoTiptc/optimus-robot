@@ -1,202 +1,77 @@
 # 🤖 Optimus Robot
 
-> **Sistema Robótico Distribuído com IA, Mensageria Assíncrona e QA de Nível Profissional**
+**Sistema Robótico Distribuído com IA, Mensageria Assíncrona e QA de Nível Profissional**
 
-O **Optimus Robot** é um projeto âncora de portfólio focado em **Arquitetura de Sistemas Reais**, combinando **IA**, **Edge Computing**, **Sistemas Distribuídos**, **DevOps** e **Qualidade de Software**.
-
-Este projeto não é um protótipo simples. Ele foi pensado para refletir **cenários reais de produção**, similares aos exigidos por empresas que pedem experiência com **Sistemas Assíncronos, Mensageria, Observabilidade, QA e Infraestrutura**.
+O **Optimus Robot** é um projeto de arquitetura de sistemas reais, combinando IA, Edge Computing, Sistemas Distribuídos e DevOps. O projeto foi estruturado para refletir cenários de produção que exigem alta resiliência e escalabilidade.
 
 ---
 
-## 🎯 Objetivo do Projeto
+## 📚 Fundamentação Teórica
 
-Construir um **Agente Robótico Distribuído**, onde:
+O desenvolvimento deste sistema é pautado pelos pilares da Engenharia de Software moderna:
 
-* Um nó central (Raspberry Pi) toma decisões inteligentes
-* Um nó de borda (Jetson Nano) processa visão computacional
-* A comunicação ocorre de forma **assíncrona e resiliente**
-* Toda a arquitetura é **testável, observável e containerizada**
+* **Engenharia de Software Evolucionária (Roger Pressman):** A arquitetura foi desenhada para permitir o crescimento incremental. O uso de containers e mensageria garante que o sistema evolua organicamente de um protótipo inicial para uma infraestrutura complexa sem comprometer o núcleo do sistema.
+* **Sistemas Sócio-Técnicos (Ian Sommerville):** O projeto considera a integração entre hardware, software e o contexto de operação real. A estrutura Master-Worker reflete a necessidade de um sistema que seja resiliente a falhas parciais, mantendo a operação contínua mesmo sob condições adversas.
 
 ---
 
 ## 🧠 Visão Geral da Arquitetura
 
-**Padrão:** Master–Worker / Orquestrador + Edge
+O sistema utiliza um padrão **Master–Worker / Orquestrador + Edge**:
 
-### Componentes principais:
-
-* **Raspberry Pi (Master / Orquestrador)**
-
-  * IA de alto nível (LangChain / LangGraph)
-  * API de controle (Node.js)
-  * Mensageria (Redis)
-  * Observabilidade
-
-* **Jetson Nano (Worker / Edge)**
-
-  * Visão computacional
-  * Processamento de eventos visuais
-  * Envio de eventos assíncronos
-
-* **Comunicação**
-
-  * Arquitetura orientada a eventos
-  * Mensagens desacopladas via Redis
+* **Master (Raspberry Pi):** Responsável pela tomada de decisão de alto nível (IA).
+* **Edge (Jetson Nano):** Processamento de visão computacional e eventos em tempo real.
+* **Mensageria:** Comunicação desacoplada e assíncrona.
 
 ---
 
-## 🧩 Tecnologias Utilizadas
+## 🧩 Estrutura do Repositório (Atualizada)
 
-### IA & Backend
+A organização atual reflete a separação de responsabilidades para facilitar a manutenção e o QA:
 
-* Python
-* LangChain / LangGraph
-* FastAPI
-* Ollama (opcional / LLM local)
-
-### Controle & QA
-
-* Node.js
-* Cypress (automação e testes de sistema)
-
-### Infraestrutura & DevOps
-
-* Docker
-* Docker Compose
-* Redis (mensageria assíncrona)
-
-### Hardware
-
-* Raspberry Pi 4/5
-* NVIDIA Jetson Nano
-
----
-
-## 📁 Estrutura do Repositório
-
-```
+```text
 optimus-robot/
-├── brain-core/            # IA e tomada de decisão (Python)
-│   ├── main.py
-│   ├── api.py
-│   ├── requirements.txt
-│   └── Dockerfile
-│
-├── control-panel/         # Interface e orquestração (Node.js)
-│   ├── src/
-│   │   └── server.js
-│   ├── cypress/           # Testes automatizados (QA)
-│   ├── package.json
-│   └── Dockerfile
-│
-├── contracts/             # Contratos de mensagens (event-driven)
-│   └── vision-event.json
-│
-├── docker-compose.yml     # Orquestração dos serviços
-├── .env                   # Variáveis de ambiente
-└── README.md
-```
+├── brain-core/            # IA e tomada de decisão (Python/FastAPI)
+│   ├── app/               # Lógica interna (main.py, api.py)
+│   ├── Dockerfile         # Containerização do cérebro
+│   └── requirements.txt   # Dependências Python
+├── control-panel/         # Interface e orquestração (Node.js) - [Em breve]
+├── contracts/             # Definição de mensagens entre serviços
+├── docker-compose.yml     # Orquestração do ambiente completo
+├── .env.example           # Configurações de ambiente
+└── README.md              # Documentação técnica
 
----
 
-## 🔄 Arquitetura Orientada a Eventos
 
-O sistema utiliza **mensageria assíncrona** para evitar acoplamento direto entre serviços.
+ Roadmap de Desenvolvimento
+​[x] Fase 1 - Foundation: Estrutura base com FastAPI e Docker.
+​[ ] Fase 2 - Mensageria: Integração com Redis para eventos assíncronos.
+​[ ] Fase 3 - QAOps: Implementação de testes de resiliência com Cypress.
+​[ ] Fase 4 - Edge Integration: Conexão com módulos de visão computacional.
+​📊 Diferencial de Engenharia
+​Este projeto demonstra competências em:
+​Arquitetura orientada a eventos.
+​Containerização de microserviços.
+​Garantia de qualidade profissional aplicada a sistemas complexos.
+​<!-- end list -->
 
-### Exemplo de evento:
 
-```json
-{
-  "source": "jetson",
-  "type": "vision_event",
-  "payload": {
-    "object": "person",
-    "distance": 2.1
-  }
-}
-```
 
-Essa abordagem permite:
 
-* Escalabilidade
-* Resiliência
-* Substituição futura do Redis por Kafka ou SQS sem mudança conceitual
 
----
 
-## 🧪 Qualidade de Software (QA)
 
-O projeto aplica QA **além da interface gráfica**:
 
-* Testes de fluxo completo (end-to-end)
-* Testes de falha (Redis indisponível, serviços fora do ar)
-* Validação de contratos de mensagens
-* Testes de resiliência do sistema
 
-Ferramenta principal: **Cypress**
 
----
 
-## 📊 Observabilidade
 
-* Registro de decisões do agente (LangSmith)
-* Logs estruturados por evento
-* Rastreabilidade de ações do robô
 
-Cada decisão do Optimus é **auditável**.
 
----
 
-## 🚀 Roadmap (Feature-Based, estilo empresa)
 
-### 🔹 Fase 1 – Foundation (Core)
 
-* [ ] Brain-core com FastAPI + LangChain
-* [ ] Redis como fila assíncrona
-* [ ] Docker Compose funcional
 
-### 🔹 Fase 2 – Controle & QA
 
-* [ ] API Node.js de controle
-* [ ] Dashboard simples
-* [ ] Testes Cypress de fluxo
 
-### 🔹 Fase 3 – Edge Computing
 
-* [ ] Jetson Nano processando visão
-* [ ] Envio de eventos visuais
-* [ ] Integração com Brain-core
-
-### 🔹 Fase 4 – Resiliência & Observabilidade
-
-* [ ] Testes de falha
-* [ ] Logs estruturados
-* [ ] Monitoramento de decisões
-
-### 🔹 Fase 5 – Evolução (Futuro)
-
-* [ ] Substituição Redis → Kafka/SQS
-* [ ] Migração para Kubernetes
-* [ ] Expansão para múltiplos workers
-
----
-
-## 🧠 Diferencial Profissional
-
-Este projeto demonstra experiência prática em:
-
-* Sistemas Distribuídos
-* Arquitetura Orientada a Eventos
-* IA aplicada a hardware real
-* DevOps e Infraestrutura
-* QA de sistemas complexos
-
-> **Optimus Robot não é um chatbot. É um sistema inteligente real.**
-
----
-
-## 📌 Status do Projeto
-
-🚧 Em desenvolvimento ativo – 2026
-
----

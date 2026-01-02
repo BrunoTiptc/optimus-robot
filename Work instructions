@@ -1,0 +1,125 @@
+# 🧭 Instruções de Trabalho — Optimus Robot
+
+Este arquivo existe para **você nunca se perder**.
+Leia de cima para baixo sempre que voltar ao projeto.
+
+---
+
+## 🧠 Estado atual do projeto
+
+* Estrutura criada
+* Docker Compose configurado
+* Brain Core (FastAPI) funcional
+* Endpoint `/health` respondendo
+* Redis integrado na orquestração
+
+👉 **Último checkpoint válido:** sistema sobe e responde `/health`
+
+---
+
+## 🖥️ Como retomar o trabalho (passo a passo)
+
+### 1️⃣ Abrir o ambiente
+
+1. Ligue o computador
+2. Abra o **Docker Desktop**
+
+   * Aguarde até aparecer como **Running**
+   * Não continue se o Docker não estiver ativo
+
+---
+
+### 2️⃣ Abrir o projeto
+
+1. Abra a IDE (VS Code)
+2. Abra a pasta raiz do projeto:
+
+```
+optimus-robot/
+```
+
+---
+
+### 3️⃣ Subir o sistema
+
+No terminal da IDE (ou PowerShell):
+
+```bash
+docker compose up -d
+```
+
+Isso irá:
+
+* Subir Redis
+* Subir Brain Core
+* Manter tudo rodando em background
+
+---
+
+### 4️⃣ Verificar se está tudo vivo
+
+```bash
+docker compose ps
+```
+
+Você deve ver:
+
+* brain-core → Up
+* redis → Up
+
+---
+
+### 5️⃣ Testar o checkpoint atual
+
+No PowerShell:
+
+```powershell
+Invoke-WebRequest http://localhost:8000/health
+```
+
+Resposta esperada:
+
+```json
+{"status": "online"}
+```
+
+👉 Se respondeu isso, você está **exatamente onde paramos**.
+
+---
+
+## ⛔ Como parar o sistema (quando terminar)
+
+```bash
+docker compose down
+```
+
+Isso encerra tudo de forma limpa.
+
+---
+
+## 📍 Onde paramos (importante)
+
+* Infra ok
+* Serviço saudável
+* Nenhuma lógica de negócio ainda
+
+### 🔜 Próximo passo planejado
+
+👉 Conectar o Brain Core ao Redis
+
+* Publicar evento simples
+* Consumir evento
+* Logar reação do sistema
+
+---
+
+## 🧠 Regra de ouro
+
+> **Nunca avance sem atualizar este arquivo.**
+
+Se algo novo for feito:
+
+* Atualize o checkpoint
+* Anote onde paramos
+
+Este arquivo é sua **memória externa**.

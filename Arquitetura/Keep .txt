@@ -1,0 +1,50 @@
+Arquitetura Optimus – Ponto 0
+Modelo Cognitivo Baseado em Máquinas de Estados e Fluxos Orquestrados
+Componentes Principais
+Optimus Core (Raspberry Pi)
+ Responsável pela orquestração da consciência local, gestão de estados internos, captação de áudio, tomada de decisão primária e execução unificada das saídas físicas e interativas.
+
+Módulo Sensorial (Jetson Nano)
+ Responsável pela percepção visual contínua do ambiente, detecção de padrões, reconhecimento de entidades e geração de eventos relevantes.
+
+Consciência Central (Cloud / IA Externa)
+ Responsável pela cognição de alto nível, processamento avançado de linguagem natural (NLP) e raciocínio semântico contextual.
+
+
+Próximos Passos de Modelagem
+Modelagem dos Diagramas de Máquina de Estados (FSM) do Optimus Core.
+
+Definição dos Diagramas de Sequência para os fluxos de Voz e Visão.
+
+Estruturação dos Contratos de Eventos em formato JSON.
+
+
+Roadmap de Modelagem – Optimus (UML / ASTAH)
+Passo 1 – Sistema Nervoso (Sequence Diagram) – Atual
+Mapeamento da troca de mensagens entre Jetson Nano, Optimus Core e Consciência Central.
+
+Foco nos fluxos de reação visual e interação por voz.
+
+Passo 2 – Cérebro (State Machine Diagram) – Próximo
+Modelagem dos estados internos do Optimus Core (IDLE, ENGAGED, THINKING, ALERT).
+
+Definição de transições e hierarquias de estados.
+
+Passo 3 – Contratos de Interface (Class / Interface Diagram)
+Definição das estruturas de dados para Intents, Events e States.
+
+Padronização da comunicação entre os módulos do sistema.
+
+Passo 4 – Visão de Implantação (Deployment Diagram)
+Mapeamento físico da arquitetura, especificando quais componentes executam no Raspberry Pi, Jetson Nano e Cloud.
+
+Passo 5 – Casos de Uso (Use Case Diagram)
+Representação da interação do usuário final, incluindo:
+
+Interagir por voz
+
+Ser reconhecido visualmente
+
+Monitorar o ambiente
+
+

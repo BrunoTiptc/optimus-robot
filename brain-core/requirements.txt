@@ -4,3 +4,4 @@ langchain
 langchain-openai
 redis
 python-dotenv
+google-cloud-firestore

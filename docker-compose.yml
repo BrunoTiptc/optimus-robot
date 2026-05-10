@@ -21,6 +21,10 @@ services:
       - redis
     env_file:
       - .env
+    volumes:
+      - ./brain-core/optimus-key.json:/app/optimus-key.json
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/optimus-key.json
     networks:
       - optimus-net
     restart: on-failure

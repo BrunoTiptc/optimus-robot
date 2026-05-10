@@ -1,3 +1,6 @@
 .env
 __pycache__/
 *.py[cod]
+
+optimus-key.json
+save_key.py

@@ -7,32 +7,22 @@ Engenharia de Software Evolucionária (Roger Pressman):
 A arquitetura permite crescimento incremental, evoluindo de um protótipo simples para um sistema distribuído completo sem comprometer a base.
 Sistemas Sócio-Técnicos (Ian Sommerville):
 Integra hardware, software e contexto operacional real. O sistema considera falhas, latência e comunicação entre múltiplos dispositivos físicos.
-🧠 Visão Geral da Arquitetura
-O sistema utiliza um padrão:
-Master–Worker / Orquestrador + Edge + Firmware Layer
-🔹 Componentes principais:
-🧠 Master (Raspberry Pi)
-Responsável pela orquestração do sistema, regras de negócio e tomada de decisão de alto nível.
-🚀 AI Accelerator (40 TOPS)
-Executa modelos de IA para:
-visão computacional
-reconhecimento de voz
-inferência em tempo real
-⚙️ Arduino (Firmware Layer)
-Responsável pelo controle físico:
-sensores
-motores
-atuadores
-leitura de ambiente
-🔗 Mensageria Assíncrona (Redis / MQTT - futuro)
-Comunicação desacoplada entre os módulos, garantindo resiliência e escalabilidade.
-🔄 Fluxo de Dados (Alto Nível)
-Sensores capturam dados via Arduino
-Arduino envia eventos para o Master (Raspberry Pi)
-O Master processa ou encaminha para o módulo de IA
-O módulo de IA retorna uma decisão
-O Master envia comandos de volta ao Arduino
-O Arduino executa ações físicas no ambiente
+
+O sistema é dividido em duas esferas principais que se integram via rede local e mensageria:
+
+### 1. 📺 O Hospedeiro Virtual (Holograma / Espelho Mágico)
+A interface de usuário 3D de alta performance, agindo como um **"Espelho Mágico"** (Host virtual). Ela exibe o rosto holográfico em tempo real, reproduz a voz sintetizada e exibe telemetria do sistema.
+
+### 2. 🦾 O Corpo Físico (Hardware Distribuído - Futuro)
+O conjunto de hardware embarcado que dá capacidade física e motora ao robô:
+* **🧠 Master (Raspberry Pi)**: Responsável pela orquestração do sistema, regras de negócio e tomada de decisão de alto nível.
+* **🚀 Edge AI Accelerator (Jetson Nano - 40 TOPS)**: Executa modelos de IA pesados de visão computacional, reconhecimento de voz local e inferência em tempo real.
+* **⚙️ Firmware Layer (Arduino Ventuno Q)**: Responsável pelo controle físico direto (leitura de sensores analógicos/digitais, acionamento de servo motores e atuadores físicos).
+
+🔹 **Fluxo de Comunicação**:
+* A comunicação entre o Hospedeiro Virtual (Holograma) e o Cérebro FastAPI é feita em tempo real via **WebSockets**.
+* A comunicação entre o Cérebro e o Corpo Físico é desacoplada através de uma **camada de mensageria assíncrona (Redis)**.
+
 🧩 Estrutura do Repositório
 Plain text
 optimus-robot/

@@ -1,21 +1,43 @@
-# 🚀 Como Rodar o Optimus Robot
+## Instruções Gerais
 
-Siga esta ordem sempre que abrir o projeto para garantir que tudo funcione!
+Este documento reúne todas as instruções necessárias para o uso, desenvolvimento e manutenção do projeto Optimus Robot, de forma clara e sem emojis.
 
-### 1️⃣ Ligar o Motor (Docker)
-- Abra o **Docker Desktop**.
-- Espere até que a barra inferior fique **verde** (Running).
+### Como rodar o Optimus Robot
+1. Abra o Docker Desktop e aguarde até que esteja rodando.
+2. Abra a pasta `optimus-robot` no VS Code.
+3. Verifique se o arquivo `brain-core/optimus-key.json` (chave do Firebase) está presente.
+4. No terminal do VS Code, execute:
+	```bash
+	docker compose up -d
+	```
+5. Para acessar a interface de testes (Swagger), abra o navegador em: http://localhost:8000/docs
 
-### 2️⃣ Preparar o Ambiente (VS Code)
-- Abra a pasta `optimus-robot` no VS Code.
-- Verifique se o arquivo `brain-core/optimus-key.json` (sua chave do Firebase) está lá.
+### Como usar o sistema
+1. Siga o guia de instalação no README.
+2. Execute o ambiente conforme descrito no docker-compose.
+3. Utilize a API conforme a documentação técnica.
 
-### 3️⃣ Subir o Sistema
-No terminal do VS Code, digite:
-```bash
-docker compose up -d
+### Como contribuir
+- Faça um fork do repositório.
+- Crie uma branch para sua feature ou correção.
+- Envie um pull request detalhando as mudanças.
 
-### 🌐 Interface Visual (Swagger)
-O Optimus roda "escondido" no Docker, então para ver a interface de testes:
-- Abra o Chrome em: http://localhost:8000/docs
-- Aqui você pode testar todos os comandos visualmente!
+### Dicas e Boas Práticas
+- Mantenha o código limpo e documentado.
+- Sempre atualize este documento ao adicionar novas funcionalidades.
+
+### Testar o Fluxo
+1. Inicie todos os containers com `docker-compose up`.
+2. Acesse a API na porta configurada.
+3. Realize requisições de teste conforme exemplos na documentação.
+
+### Atualizar Dependências
+1. Acesse a pasta do serviço desejado.
+2. Execute o comando de atualização de dependências (ex: `pip install -r requirements.txt`).
+
+### Backup de Dados
+1. Identifique os arquivos de dados importantes.
+2. Realize cópias de segurança periodicamente.
+
+### Contato
+Em caso de dúvidas, entre em contato com o responsável pelo projeto.

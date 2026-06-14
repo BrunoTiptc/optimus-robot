@@ -1,4 +1,4 @@
-from app.websocket.socket_manager import manager
+from app.routes.hologram_routes import manager
 
 class HologramService:
     async def update_state(self, state: str, detail: str = None):
@@ -10,7 +10,7 @@ class HologramService:
         if state not in valid_states:
             raise ValueError(f"Invalid state: {state}. Must be one of {valid_states}")
         
-        await manager.broadcast({
+        await manager.broadcast_json({
             "event": "state_change",
             "state": state,
             "detail": detail

@@ -1,10 +1,12 @@
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict, Any
 import asyncio
 from google.cloud import firestore
 from app.services.hologram_service import hologram_service
+from app.services.ai_service import ai_service
+from app.services.memory_service import WatsonSessionMemory
 
 router = APIRouter(prefix="/robot", tags=["robot"])
 db = firestore.Client()
@@ -15,6 +17,24 @@ class RobotAction(BaseModel):
     command: str
     status: Optional[str] = "pending"
     timestamp: Optional[datetime] = None
+
+
+class ChatRequest(BaseModel):
+    userId: str
+    sessionId: str
+    message: str
+
+
+class ChatResponse(BaseModel):
+    response: str
+    userId: str
+    sessionId: str
+    session: Dict[str, Any]
+
+
+class ConsolidateRequest(BaseModel):
+    userId: str
+    sessionId: str
 
 async def simulate_action_execution(action: RobotAction):
     """
@@ -76,3 +96,39 @@ async def trigger_robot_action(action: RobotAction, background_tasks: Background
         "actionId": action.actionId,
         "message": "Action dispatched and logged to Firestore"
     }
+
+
+@router.post("/chat", response_model=ChatResponse)
+async def robot_chat(chat: ChatRequest):
+    """
+    Recebe uma mensagem do usuário, processa com IA e atualiza a sessão no Firestore.
+    """
+    session = WatsonSessionMemory.get_or_create_session(chat.userId, chat.sessionId)
+
+    response_text, extracted_vars = ai_service.process_message(chat.message, session)
+
+    updated_session = WatsonSessionMemory.update_session(
+        chat.userId,
+        chat.sessionId,
+        chat.message,
+        response_text,
+        extracted_vars
+    )
+
+    return {
+        "response": response_text,
+        "userId": chat.userId,
+        "sessionId": chat.sessionId,
+        "session": updated_session
+    }
+
+
+@router.post("/session/consolidate")
+def consolidate_session(request: ConsolidateRequest):
+    """
+    Consolida a sessão no Firestore em um resumo e limpa o documento temporário.
+    """
+    result = WatsonSessionMemory.consolidate_to_summary(request.userId, request.sessionId)
+    if result.get("status") != "success":
+        raise HTTPException(status_code=404, detail=result.get("message", "Session not found"))
+    return result

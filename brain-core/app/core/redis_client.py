@@ -1,28 +1,58 @@
-import redis
-import os
+# redis_client.py
+import json
+from app.core.config import Config
 
-REDIS_HOST = os.getenv("REDIS_HOST", "redis")
-REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+# Tenta importar o pacote real do Redis
+try:
+    import redis
+    REDIS_AVAILABLE = True
+except ImportError:
+    REDIS_AVAILABLE = False
 
 class DummyRedis:
-    """
-    Mock do Redis para desenvolvimento local offline,
-    garantindo que o sistema não trave se o Redis não estiver ativo.
-    """
-    def ping(self):
-        return False
-    def publish(self, channel, message):
-        print(f"[MOCK-REDIS] Publicando no canal {channel}: {message}")
-        return 0
+    """Fallback seguro caso o Redis real não esteja rodando ou instalado"""
+    def __init__(self):
+        print("⚠️  [REDIS-FALLBACK]: Usando Mock interno (DummyRedis). Mensageria offline ativa.")
+        self.storage = {}
+        self.pubsub_channels = {}
 
-try:
-    # Tenta conectar ao Redis físico
-    redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True, socket_connect_timeout=2)
-    # Testa se o Redis está respondendo
-    redis_client.ping()
-    redis_available = True
-    print(f"[REDIS] Conectado com sucesso ao Redis em {REDIS_HOST}:{REDIS_PORT}")
-except Exception as e:
-    redis_client = DummyRedis()
-    redis_available = False
-    print(f"[REDIS-ALERTA] Redis indisponível ({e}). Usando MockRedis para estabilidade.")
+    def get(self, key):
+        return self.storage.get(key)
+
+    def set(self, key, value, ex=None):
+        self.storage[key] = value
+        return True
+
+    def publish(self, channel, message):
+        # Apenas simula o log do evento rodando localmente
+        # print(f"📢 [Dummy Pub/Sub] Canal '{channel}': {message[:60]}...")
+        return 1 # Simula que 1 cliente ouviu
+
+    def ping(self):
+        return True
+
+
+def initialize_redis():
+    """Inicializa o cliente do Redis real ou cai no Dummy de contingência"""
+    if not REDIS_AVAILABLE:
+        return DummyRedis()
+
+    try:
+        # Puxa os dados validados do nosso config.py centralizado
+        client = redis.Redis(
+            host=Config.REDIS_HOST,
+            port=Config.REDIS_PORT,
+            password=Config.REDIS_PASSWORD,
+            decode_responses=True, # Facilita pegando strings direto em vez de bytes
+            socket_timeout=2.0     # Se o Redis real sumir, ele desiste em 2s e vai pro dummy
+        )
+        # Testa a conexão real disparando um ping
+        client.ping()
+        print(f"🧠 [REDIS]: Conectado com sucesso em {Config.REDIS_HOST}:{Config.REDIS_PORT}")
+        return client
+    except Exception as e:
+        print(f"⚠️  [REDIS-ERRO]: Falha ao conectar no servidor Redis ({e}).")
+        return DummyRedis()
+
+# Instância global do cliente para o event_bus e services usarem
+redis_client = initialize_redis()

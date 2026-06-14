@@ -36,45 +36,35 @@ pause
 goto MENU
 
 :ACTIVATE
-call ".venv\Scripts\activate.bat"
+call .venv\Scripts\activate.bat
 goto :eof
 
 :INSTALL_DEPS
 call :ACTIVATE
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-
 echo.
 echo Dependencias instaladas/atualizadas.
 pause
 goto MENU
 
 :START_SERVER
-call :ACTIVATE
-REM Ajuste estas variaveis conforme seu ambiente real.
 set REDIS_URL=redis://localhost:6379
-REM Defina OPENAI_API_KEY no seu ambiente ou no arquivo .env.
-REM OPENAI_API_KEY também pode ser configurado em optimus-robot\.env.
 
 REM Define automaticamente o caminho do service account key se existir.
 set "KEY_PATH=%~dp0optimus-key.json"
 if exist "%KEY_PATH%" (
     set "GOOGLE_APPLICATION_CREDENTIALS=%KEY_PATH%"
-    echo GOOGLE_APPLICATION_CREDENTIALS definido para %GOOGLE_APPLICATION_CREDENTIALS%
+    echo GOOGLE_APPLICATION_CREDENTIALS definido para %KEY_PATH%
 ) else (
     echo AVISO: optimus-key.json nao encontrado em %~dp0
     echo Defina GOOGLE_APPLICATION_CREDENTIALS manualmente se quiser usar o Firestore remoto.
 )
 
-echo Iniciando servidor backend...
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-if %ERRORLEVEL% neq 0 (
-    echo.
-    echo Erro ao iniciar o servidor. Veja as mensagens acima.
-    pause
-)
+echo Iniciando servidor backend em nova janela...
+start "Optimus Backend" cmd /k "cd /d "%~dp0" && call ".venv\Scripts\activate.bat" && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
 
-goto END
+goto MENU
 
 :RUN_TESTS
 call :ACTIVATE
@@ -83,12 +73,15 @@ pause
 goto MENU
 
 :OPEN_FRONTEND
-set "FRONTEND=%~dp0..\..\HologramOptimus\index.html"
-if exist "%FRONTEND%" (
-    start "" "%FRONTEND%"
+set "FRONTEND_DIR=%~dp0..\..\HologramOptimus"
+set "FRONTEND_HTML=%FRONTEND_DIR%\index.html"
+if exist "%FRONTEND_HTML%" (
+    echo Abrindo frontend via servidor HTTP em http://127.0.0.1:5500/index.html
+    start "Optimus Frontend" cmd /k "cd /d \"%FRONTEND_DIR%\" && python -m http.server 5500"
+    start "" "http://127.0.0.1:5500/index.html"
 ) else (
     echo Nao foi possivel encontrar o frontend em:
-    echo %FRONTEND%
+    echo %FRONTEND_HTML%
     echo Ajuste o caminho no start.bat se necessario.
 )
 pause

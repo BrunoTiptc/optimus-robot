@@ -8,6 +8,7 @@ python-dotenv
 google-cloud-firestore
 websockets
 pydantic
+pydantic-settings
 pytest
 httpx
 requests

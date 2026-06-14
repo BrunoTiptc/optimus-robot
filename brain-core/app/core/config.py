@@ -7,6 +7,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Localiza a raiz do projeto para o arquivo .env
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+ENV_FILE_CANDIDATES = [
+    BASE_DIR / ".env",
+    BASE_DIR.parent / ".env",
+]
+ENV_FILE = next((path for path in ENV_FILE_CANDIDATES if path.exists()), BASE_DIR / ".env")
 
 
 class AppEnvironment(str, Enum):
@@ -52,7 +57,7 @@ class Settings(BaseSettings):
 
     # Configuração do comportamento do Pydantic Settings
     model_config = SettingsConfigDict(
-        env_file=BASE_DIR / ".env",
+        env_file=ENV_FILE,
         env_file_encoding="utf-8",
         extra="ignore" # Ignora variáveis extras que estejam no .env mas não usamos aqui
     )
@@ -69,12 +74,12 @@ class Settings(BaseSettings):
             warnings.append("FIREBASE_PROJECT_ID (O Firestore local ou remoto falhará)")
             
         if warnings:
-            print("\n⚠️  [CONFIG-ALERTA]: Componentes vitais ausentes no ambiente:")
+            print("\n[CONFIG-ALERTA]: Componentes vitais ausentes no ambiente:")
             for warn in warnings:
-                print(f"   ↳ {warn}")
+                print(f"   - {warn}")
             print("O cérebro do robô iniciará em modo de degradação parcial.\n")
         else:
-            print(f"✅ [CONFIG]: Variáveis validadas com sucesso para o ambiente: [{self.APP_ENV.value.upper()}]")
+            print(f"[CONFIG]: Variáveis validadas com sucesso para o ambiente: [{self.APP_ENV.value.upper()}]")
 
 
 # Instancia o objeto global de configurações (Singleton)

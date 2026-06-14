@@ -1,0 +1,47 @@
+Requisitos: Python 3.11 ou superior, Redis (localhost:6379) ou via Docker,
+(somente se quiser usar Firestore remoto) o arquivo optimus-key.json,
+e opcionalmente OPENAI_API_KEY para o provedor OpenAI.
+
+Uso recomendado via start.bat:
+
+1) Abra PowerShell.
+2) Navegue para o backend:
+   cd "optimus-robot\brain-core"
+3) Execute:
+   .\start.bat
+
+O script fará:
+- criar/ativar o ambiente virtual em .venv
+- instalar dependências (opcional, se escolher 4)
+- definir automaticamente GOOGLE_APPLICATION_CREDENTIALS para
+  otim-us-key.json quando ele existir em brain-core
+- iniciar o servidor FastAPI
+
+Se preferir rodar manualmente:
+
+1) Navegue para o backend:
+   cd "optimus-robot\brain-core"
+
+2) Crie o ambiente virtual (se ainda não existir):
+   python -m venv .venv
+
+3) Ative o ambiente:
+   .\.venv\Scripts\Activate.ps1
+
+4) Instale dependências:
+   python -m pip install --upgrade pip
+   python -m pip install -r requirements.txt
+
+5) Defina variáveis de ambiente no PowerShell:
+   $env:REDIS_URL='redis://localhost:6379'
+   $env:OPENAI_API_KEY='sua_chave_aqui'      # opcional
+   $env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\Bruno PC\Desktop\Materias\Programacao\🤖 Optimus Robot\optimus-robot\brain-core\optimus-key.json"
+
+6) Inicie o backend:
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+Observação:
+- Se o arquivo optimus-key.json estiver presente em brain-core, o start.bat
+  já define a variável GOOGLE_APPLICATION_CREDENTIALS automaticamente.
+- Caso o Firestore não esteja configurado, o backend ainda iniciará em modo
+degradação local, mas não persistirá dados no Firestore remoto.

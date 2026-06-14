@@ -1,8 +1,11 @@
 from typing import Dict, Any, Optional
 from datetime import datetime
-from google.cloud import firestore
 
-db = firestore.Client()
+from app.core.database import db
+
+
+def _firestore_available() -> bool:
+    return db is not None
 
 
 class ContextService:
@@ -15,6 +18,9 @@ class ContextService:
     @staticmethod
     def get_user_profile(user_id: str) -> Dict[str, Any]:
         """Retorna o documento do usuário ou um dicionário vazio se não existir."""
+        if not _firestore_available():
+            return {}
+
         try:
             doc = db.collection("users").document(user_id).get()
             if doc.exists:
@@ -26,6 +32,10 @@ class ContextService:
     @staticmethod
     def update_user_preferences(user_id: str, preferences: Dict[str, Any]) -> bool:
         """Merge simples das preferências fornecidas no documento do usuário."""
+        if not _firestore_available():
+            print("[CONTEXT_SERVICE] Firestore indisponível: preferências não serão persistidas.")
+            return False
+
         try:
             user_ref = db.collection("users").document(user_id)
             user_doc = user_ref.get()

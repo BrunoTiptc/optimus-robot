@@ -1,31 +1,45 @@
-🤖 Optimus Robot: Das Engrenagens às Nuvens
-Sistema Robótico Distribuído com IA, Edge Computing e Presença Holográfica
-O Optimus Robot evoluiu de um conceito clássico de robótica física para um ecossistema de arquitetura de sistemas reais
-. Ele combina Inteligência Artificial, Edge Computing e Sistemas Distribuídos com uma interface holográfica de alta fidelidade visual, projetada para simular ambientes de produção que exigem resiliência, desacoplamento e escalabilidade
-.
-"A presença não depende totalmente da matéria." — O projeto documenta a transição de motores e rodas para uma presença de luz e lógica persistente
-.
-📚 Fundamentação Teórica
-Engenharia de Software Evolucionária (Roger Pressman): A arquitetura permite crescimento incremental, evoluindo de um protótipo físico simples para um sistema distribuído completo sem comprometer a base tecnológica [Query].
-Sistemas Sócio-Técnicos (Ian Sommerville): Integra hardware, software e o contexto operacional. Considera falhas de sensores, latência de rede e a comunicação duplex entre múltiplos dispositivos físicos [Query].
-🧠 Visão Geral da Arquitetura
-O sistema adota o padrão Master–Worker / Orquestrador + Edge + Firmware Layer [Query].
-🔹 Componentes Principais
-🧠 Master (Raspberry Pi - brain-core): Orquestração central em FastAPI, gerenciando regras de negócio, memória de longo prazo no Firestore e decisões de IA [Query, 7, 130].
-🚀 AI Accelerator (40 TOPS): Módulo dedicado para visão computacional, reconhecimento de voz e inferência de modelos de linguagem (OpenAI/LangChain) em tempo real [Query, 67, 71].
-⚙️ Arduino (Firmware Layer): Controle físico de baixo nível para sensores, motores e leitura de ambiente [Query].
-🔗 Mensageria Assíncrona (Redis): Barramento de eventos que garante comunicação desacoplada e de sub-milissegundo entre o cérebro e os demais módulos [Query, 86, 130].
-🎭 Interface Holográfica (HologramOptimus): Front-end em Three.js que renderiza a face do robô em tempo real, reagindo a estados via WebSockets
-.
-🔄 Fluxo de Dados Integrado
-Captura: Sensores físicos capturam dados via Arduino [Query].
-Processamento: O Arduino envia eventos para o Master (Raspberry Pi/FastAPI) [Query].
-Inteligência: O Master processa o contexto (buscando memórias no Firestore) e consulta o módulo de IA
-.
-Feedback Visual: O brain-core publica o estado no Redis, que é transmitido via WebSocket para o holograma 3D alterar sua animação e cor
-.
-Ação Física: O Master envia comandos de volta ao Arduino para execução no ambiente real [Query].
-🧩 Estrutura do Repositório
+# 🤖 Optimus Robot: Das Engrenagens às Nuvens
+
+### Sistema Robótico Distribuído com IA, Edge Computing e Presença Holográfica
+
+O **Optimus Robot** evoluiu de um conceito clássico de robótica física para um ecossistema de arquitetura de sistemas reais. Ele combina Inteligência Artificial, Edge Computing e Sistemas Distribuídos com uma interface holográfica de alta fidelidade visual, projetada para simular ambientes de produção que exigem resiliência, desacoplamento e escalabilidade.
+
+> 💡 *"A presença não depende totalmente da matéria."* — O projeto documenta a transição de motores e rodas para uma presença de luz e lógica persistente.
+
+---
+
+## 📚 Fundamentação Teórica
+
+*   **Engenharia de Software Evolucionária (Roger Pressman):** A arquitetura permite crescimento incremental, evoluindo de um protótipo físico simples para um sistema distribuído completo sem comprometer a base tecnológica.
+*   **Sistemas Sócio-Técnicos (Ian Sommerville):** Integra hardware, software e o contexto operacional. Considera falhas de sensores, latência de rede e a comunicação duplex entre múltiplos dispositivos físicos.
+
+---
+
+## 🧠 Visão Geral da Arquitetura
+
+O sistema adota o padrão **Master–Worker / Orquestrador + Edge + Firmware Layer**.
+
+### 🔹 Componentes Principais
+
+1.  **Master (Raspberry Pi - *brain-core*):** Orquestração central desenvolvida em FastAPI, gerenciando regras de negócio, memória de longo prazo no Firestore (Firebase) e decisões de IA.
+2.  **AI Accelerator (40 TOPS):** Módulo dedicado para visão computacional, reconhecimento de voz e inferência de modelos de linguagem (OpenAI / LangChain) em tempo real.
+3.  **Arduino (Firmware Layer):** Controle físico de baixo nível para sensores, motores e leitura de ambiente.
+4.  **Mensageria Assíncrona (Redis):** Barramento de eventos que garante comunicação desacoplada e de sub-milissegundo entre o cérebro e os demais módulos.
+5.  **Interface Holográfica (HologramOptimus):** Front-end em Three.js que renderiza a face do robô em tempo real, reagindo a estados via WebSockets.
+
+### 🔄 Fluxo de Dados Integrado
+
+*   **Captura:** Sensores físicos capturam dados do ambiente através do Arduino.
+*   **Processamento:** O Arduino envia eventos para o Master (Raspberry Pi/FastAPI).
+*   **Inteligência:** O Master processa o contexto (buscando memórias estruturadas no Firestore) e consulta o módulo de IA para tomada de decisões.
+*   **Feedback Visual:** O *brain-core* publica o estado no Redis, que é transmitido via WebSocket para o holograma 3D alterar sua animação e cor instantaneamente.
+*   **Ação Física:** O Master envia comandos de volta ao Arduino para execução no ambiente real.
+
+---
+
+## 🧩 Estrutura do Repositório
+
+```text
 optimus-robot/
 ├── brain-core/            # IA, Memória e API Central (Python/FastAPI) [10]
 │   ├── app/               # Lógica de rotas, services e core [10]
@@ -72,7 +86,7 @@ Pré-requisitos: Python 3.11 ou superior, Redis (localhost:6379) ou Docker, e op
    - Defina variáveis de ambiente no PowerShell:
      - `$env:REDIS_URL='redis://localhost:6379'`
      - `$env:OPENAI_API_KEY='sua_chave_aqui'`  # opcional
-     - `$env:GOOGLE_APPLICATION_CREDENTIALS='optimus-key.json'`
+     - `$env:GOOGLE_APPLICATION_CREDENTIALS='C:\Users\Bruno PC\Desktop\Materias\Programacao\🤖 Optimus Robot\optimus-robot\brain-core\optimus-key.json'`
    - Inicie o servidor:
      - `uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
 

@@ -72,7 +72,7 @@ Pré-requisitos: Python 3.11 ou superior, Redis (localhost:6379) ou Docker, e op
    - Defina variáveis de ambiente no PowerShell:
      - `$env:REDIS_URL='redis://localhost:6379'`
      - `$env:OPENAI_API_KEY='sua_chave_aqui'`  # opcional
-     - `$env:GOOGLE_APPLICATION_CREDENTIALS='C:\Users\Bruno PC\Desktop\Materias\Programacao\🤖 Optimus Robot\optimus-robot\brain-core\optimus-key.json'`
+     - `$env:GOOGLE_APPLICATION_CREDENTIALS='optimus-key.json'`
    - Inicie o servidor:
      - `uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
 

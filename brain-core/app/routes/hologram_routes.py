@@ -37,7 +37,6 @@ async def redis_event_listener():
     Ele intercepta o evento 'optimus:hologram:speech' e repassa via WebSocket.
     """
     pubsub = redis_client.pubsub()
-    # Inscreve no mesmo canal que o ai_service.py está usando para publicar
     pubsub.subscribe("optimus:hologram:speech")
     
     print("📢 [WORKER]: Ouvindo eventos de voz do Optimus no Redis...")
@@ -54,10 +53,14 @@ async def redis_event_listener():
                     "event": event_data.get("event_type"),
                     "payload": event_data.get("data")
                 })
+            
+            # 👇 LINHA CRUCIAL ADICIONADA: Libera o Event Loop para o FastAPI respirar e aceitar conexões
+            await asyncio.sleep(0.1)
+            
         except Exception as e:
             # Evita que erros matem o loop infinito
             await asyncio.sleep(1)
-
+            
 @router.websocket("/ws/hologram")
 async def websocket_endpoint(websocket: WebSocket):
     """Rota que o index.html e o main.js chamam para abrir o canal de luz"""

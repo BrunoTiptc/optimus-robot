@@ -68,22 +68,46 @@ goto MENU
 
 :RUN_TESTS
 call :ACTIVATE
-pytest
+echo.
+echo [SISTEMA] Injetando PYTHONPATH para o ambiente Windows...
+echo.
+REM Configura o caminho absoluto da pasta raiz + brain-core para o Python achar a pasta 'app'
+set "PYTHONPATH=%~dp0;%~dp0brain-core"
+pytest "%~dp0..\tests"
 pause
 goto MENU
 
 :OPEN_FRONTEND
+REM Força o prompt de comando a usar a codificação UTF-8 (Page Code 65001) para aceitar o emoji
+chcp 65001 >nul
+
+REM Define os caminhos sem aspas internas para não quebrar o interpretador do Windows
 set "FRONTEND_DIR=%~dp0..\..\HologramOptimus"
-set "FRONTEND_HTML=%FRONTEND_DIR%\index.html"
+set "FRONTEND_HTML=%~dp0..\..\HologramOptimus\index.html"
+
+REM Se não achar na pasta de trás, tenta na raiz do projeto atual
+if not exist "%FRONTEND_HTML%" (
+    set "FRONTEND_DIR=%~dp0.."
+    set "FRONTEND_HTML=%~dp0..\index.html"
+)
+
 if exist "%FRONTEND_HTML%" (
-    echo Abrindo frontend via servidor HTTP em http://127.0.0.1:5500/index.html
-    start "Optimus Frontend" cmd /k "cd /d \"%FRONTEND_DIR%\" && python -m http.server 5500"
+    echo.
+    echo [SISTEMA] Frontend encontrado! Iniciando servidor HTTP...
+    echo Abrindo em: http://127.0.0.1:5500/index.html
+    echo.
+    REM Rodamos o comando limpando as aspas problemáticas do CD
+    start "Optimus Frontend" cmd /k "chcp 65001 >nul && cd /d %FRONTEND_DIR% && python -m http.server 5500"
+    timeout /t 2 >nul
     start "" "http://127.0.0.1:5500/index.html"
 ) else (
-    echo Nao foi possivel encontrar o frontend em:
-    echo %FRONTEND_HTML%
-    echo Ajuste o caminho no start.bat se necessario.
+    echo =======================================================
+    echo AVISO: Nao foi possivel encontrar o arquivo index.html
+    echo Verifique o caminho da pasta: %FRONTEND_HTML%
+    echo =======================================================
 )
+REM Restaura o padrão do terminal após rodar
+chcp 850 >nul
 pause
 goto MENU
 

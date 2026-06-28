@@ -11,7 +11,7 @@ def test_hologram_status_endpoint():
     assert response.json()["status"]
 
 def test_websocket_hologram_connection():
-    """Testa a conexão WebSocket do holograma e a troca de mensagens/eventos estruturados"""
+    """Testa a conexao WebSocket do holograma e a troca de mensagens/eventos estruturados"""
     with client.websocket_connect("/ws/hologram") as websocket:
         # Recebe mensagem inicial de boas-vindas
         data = websocket.receive_json()

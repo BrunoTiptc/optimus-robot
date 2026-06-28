@@ -9,12 +9,12 @@ try:
 except ImportError:
     REDIS_AVAILABLE = False
 
+
 class DummyRedis:
     """Fallback seguro caso o Redis real não esteja rodando ou instalado"""
     def __init__(self):
         print("⚠️  [REDIS-FALLBACK]: Usando Mock interno (DummyRedis). Mensageria offline ativa.")
         self.storage = {}
-        self.pubsub_channels = {}
 
     def get(self, key):
         return self.storage.get(key)
@@ -24,12 +24,18 @@ class DummyRedis:
         return True
 
     def publish(self, channel, message):
-        # Apenas simula o log do evento rodando localmente
-        # print(f"📢 [Dummy Pub/Sub] Canal '{channel}': {message[:60]}...")
-        return 1 # Simula que 1 cliente ouviu
+        return 1
 
     def ping(self):
         return True
+
+    def pubsub(self):
+        class DummyPubSub:
+            def subscribe(self, *args, **kwargs): 
+                pass
+            def get_message(self, *args, **kwargs):
+                return None
+        return DummyPubSub()
 
 
 def initialize_redis():
@@ -54,5 +60,6 @@ def initialize_redis():
         print(f"⚠️  [REDIS-ERRO]: Falha ao conectar no servidor Redis ({e}).")
         return DummyRedis()
 
-# Instância global do cliente para o event_bus e services usarem
+
+# Instância única global do cliente Redis
 redis_client = initialize_redis()

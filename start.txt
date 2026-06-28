@@ -1,8 +1,8 @@
-Requisitos: Python 3.11 ou superior, Redis (localhost:6379) ou via Docker,
-(somente se quiser usar Firestore remoto) o arquivo optimus-key.json,
-e opcionalmente OPENAI_API_KEY para o provedor OpenAI.
+# Requisitos: Python 3.11 ou superior, Redis (localhost:6379) ou via Docker,
+# (somente se quiser usar Firestore remoto) o arquivo optimus-key.json,
+# e opcionalmente OPENAI_API_KEY para o provedor OpenAI.
 
-Uso recomendado via start.bat:
+# Uso recomendado via start.bat:
 
 1) Abra PowerShell.
 2) Navegue para o backend:

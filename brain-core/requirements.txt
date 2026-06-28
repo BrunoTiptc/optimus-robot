@@ -10,6 +10,7 @@ websockets
 pydantic
 pydantic-settings
 pytest
+pytest-asyncio
 httpx
 requests
 python-multipart

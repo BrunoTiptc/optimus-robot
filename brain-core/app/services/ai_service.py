@@ -215,12 +215,12 @@ class AIService:
                 "Quando quiser falar, basta me acionar!",
                 "despedida",
             )
+            
 
         return (
             f"Recebi seu comando, {operator}: '{user_input}'. Meu motor Watson NLP "
             "processou seu evento e registrou o log no Firestore na nuvem! O que faremos a seguir?",
             "contingencia",
         )
-
-
+        
 ai_service = AIService()
